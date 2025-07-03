@@ -29,9 +29,12 @@ public class UserController {
     }
 
     @GetMapping
-    ApiResponse<List<UserResponse>> getUsers(){
+    ApiResponse<List<UserResponse>> getUsers(
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size
+    ){
         return ApiResponse.<List<UserResponse>>builder()
-                .result(userService.getUsers())
+                .result(userService.getUsers(page, size))
                 .build();
     }
 

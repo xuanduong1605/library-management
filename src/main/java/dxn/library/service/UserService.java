@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserService {
     UserResponse saveUser(UserCreationRequest userCreationRequest);
-    List<UserResponse> getUsers();
+    List<UserResponse> getUsers(int page, int size);
     UserResponse getUserById(Long id);
     void deleteUserById(Long id);
 }

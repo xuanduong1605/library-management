@@ -1,5 +1,6 @@
-package dxn.library.dto.response;
+package dxn.library.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +12,13 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AuthorResponse {
-    private Long id;
+public class AuthorCreationRequest {
+    @NotBlank(message = "Name is required")
     private String name;
-    private String description;
+
     private Date dateOfBirth;
+
     private String nationality;
+
+    private String description;
 }

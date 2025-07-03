@@ -9,6 +9,8 @@ import dxn.library.repository.UserRepository;
 import dxn.library.service.UserService;
 import dxn.library.util.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,22 +39,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponse> getUsers() {
-        return userRepository.findAll().stream()
+    public List<UserResponse> getUsers(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAll(pageable).stream()
                 .map(userMapper::toUserResponse)
                 .toList();
     }
 
-    public UserResponse getUserById(Long id){
-        return userMapper.toUserResponse(userRepository.findById(id)
+    public UserResponse getUserById(Long userId){
+        return userMapper.toUserResponse(userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found")));
     }
 
     @Override
-    public void deleteUserById(Long id) {
-        if (!userRepository.existsById(id)) {
+    public void deleteUserById(Long userId) {
+        if (!userRepository.existsById(userId)) {
             throw new ApiException(ResponseCode.UNKNOWN_USER);
         }
-        userRepository.deleteById(id);
+        userRepository.deleteById(userId);
     }
 }

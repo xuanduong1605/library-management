@@ -1,13 +1,21 @@
 package dxn.library.service;
 
+import dxn.library.dto.request.AuthorCreationRequest;
+import dxn.library.dto.request.BookCreationRequest;
+import dxn.library.dto.request.CategoryCreationRequest;
+import dxn.library.dto.response.AuthorResponse;
+import dxn.library.dto.response.BookResponse;
+import dxn.library.dto.response.CategoryResponse;
 import dxn.library.model.Book;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface BookService {
-    Book save(Book book);
-    List<Book> findAll();
-    Optional<Book> findById(Long id);
-    void deleteByBook(Book book);
+    BookResponse saveBook(BookCreationRequest request);
+    List<BookResponse> getAllBooks(int page, int size);
+    BookResponse findBookById(Long id);
+    void deleteBookById(Long id);
+    AuthorResponse saveAuthor(AuthorCreationRequest request);
+    CategoryResponse saveCategory(CategoryCreationRequest request);
 }

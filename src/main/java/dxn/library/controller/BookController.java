@@ -1,9 +1,15 @@
 package dxn.library.controller;
 
-import dxn.library.model.Book;
+import dxn.library.dto.request.AuthorCreationRequest;
+import dxn.library.dto.request.BookCreationRequest;
+import dxn.library.dto.request.CategoryCreationRequest;
+import dxn.library.dto.response.ApiResponse;
+import dxn.library.dto.response.AuthorResponse;
+import dxn.library.dto.response.BookResponse;
+import dxn.library.dto.response.CategoryResponse;
 import dxn.library.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,44 +25,49 @@ public class BookController {
         this.bookService = bookService;
     }
 
+    @PostMapping
+    ApiResponse<BookResponse> createBook(@RequestBody @Valid BookCreationRequest request) {
+        return ApiResponse.<BookResponse>builder()
+                .result(bookService.saveBook(request))
+                .build();
+    }
+
+    @PostMapping("/author")
+    ApiResponse<AuthorResponse> createBook(@RequestBody @Valid AuthorCreationRequest request) {
+        return ApiResponse.<AuthorResponse>builder()
+                .result(bookService.saveAuthor(request))
+                .build();
+    }
+
+    @PostMapping("/category")
+    ApiResponse<CategoryResponse> createBook(@RequestBody @Valid CategoryCreationRequest request) {
+        return ApiResponse.<CategoryResponse>builder()
+                .result(bookService.saveCategory(request))
+                .build();
+    }
+
     @GetMapping
-    public ResponseEntity<List<Book>> getAllBooks() {
-        return ResponseEntity.ok(bookService.findAll());
+    ApiResponse<List<BookResponse>> getBooks(
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size
+    ){
+        return ApiResponse.<List<BookResponse>>builder()
+                .result(bookService.getAllBooks(page, size))
+                .build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable Long id) {
-        return bookService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @PostMapping
-    public ResponseEntity<Book> createBook(@RequestBody Book book) {
-        return ResponseEntity.ok(bookService.save(book));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book) {
-        return bookService.findById(id)
-                .map(existingBook -> {
-                    book.setId(id);
-                    return ResponseEntity.ok(bookService.save(book));
-                })
-                .orElse(ResponseEntity.notFound().build());
+    ApiResponse<BookResponse> getBook(@PathVariable("id") Long id) {
+        return ApiResponse.<BookResponse>builder()
+                .result(bookService.findBookById(id))
+                .build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
-        return bookService.findById(id)
-                .map(book -> {
-                    bookService.deleteByBook(book);
-                    return ResponseEntity.ok().<Void>build();
-                })
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    public BookService getBookService() {
-        return bookService;
+    ApiResponse<String> deleteBook(@PathVariable Long id) {
+        bookService.deleteBookById(id);
+        return ApiResponse.<String>builder()
+                .result("Book deleted successfully")
+                .build();
     }
 }

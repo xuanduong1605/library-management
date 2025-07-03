@@ -5,26 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
-import java.util.List;
+import org.springframework.aot.generate.GenerationContext;
 
 @Entity
+@Table(name = "categories")
 @Data
-@Table(name = "authors")
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class Author {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-
-    private String description;
-
-    private Date dateOfBirth;
-
-    private String nationality;
 }
