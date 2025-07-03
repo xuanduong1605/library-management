@@ -2,6 +2,8 @@ package dxn.library.service.impl;
 
 import dxn.library.dto.request.UserCreationRequest;
 import dxn.library.dto.response.UserResponse;
+import dxn.library.exception.ApiException;
+import dxn.library.exception.ResponseCode;
 import dxn.library.model.User;
 import dxn.library.repository.UserRepository;
 import dxn.library.service.UserService;
@@ -10,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,6 +28,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse saveUser(UserCreationRequest request){
         User user = userMapper.toUser(request);
+
+        if (userRepository.existsByPhoneNumber(user.getPhoneNumber()) || userRepository.existsByEmail(user.getEmail())) {
+            throw new ApiException(ResponseCode.USER_EXISTED);
+        }
+
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
@@ -44,6 +50,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new ApiException(ResponseCode.UNKNOWN_USER);
+        }
         userRepository.deleteById(id);
     }
 }

@@ -1,6 +1,6 @@
 package dxn.library.exception;
 
-public class ApiException extends RuntimeException{
+public class ApiException extends RuntimeException {
     private ResponseCode responseCode;
 
     public ApiException(ResponseCode responseCode) {
