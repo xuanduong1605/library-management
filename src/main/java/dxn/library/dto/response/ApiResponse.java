@@ -13,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 public class ApiResponse <T> {
     @Builder.Default
     private int code = 200;
-    private String message;
+    @Builder.Default
+    private String message = "Success";
     private T result;
 }

@@ -1,12 +1,9 @@
 package dxn.library.controller;
 
-import dxn.library.dto.request.AuthorCreationRequest;
-import dxn.library.dto.request.BookCreationRequest;
-import dxn.library.dto.request.CategoryCreationRequest;
-import dxn.library.dto.response.ApiResponse;
-import dxn.library.dto.response.AuthorResponse;
-import dxn.library.dto.response.BookResponse;
-import dxn.library.dto.response.CategoryResponse;
+import dxn.library.dto.request.*;
+import dxn.library.dto.response.*;
+import dxn.library.model.BookOrder;
+import dxn.library.service.BookOrderService;
 import dxn.library.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +16,12 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
+    private final BookOrderService bookOrderService;
 
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, BookOrderService bookOrderService) {
         this.bookService = bookService;
+        this.bookOrderService = bookOrderService;
     }
 
     @PostMapping
@@ -46,6 +45,13 @@ public class BookController {
                 .build();
     }
 
+    @PostMapping("/order")
+    ApiResponse<BookOrderResponse> createBookOrder(@RequestBody @Valid BookOrderCreationRequest request) {
+        return ApiResponse.<BookOrderResponse>builder()
+                .result(bookOrderService.saveBookOrder(request))
+                .build();
+    }
+
     @GetMapping
     ApiResponse<List<BookResponse>> getBooks(
             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
@@ -60,6 +66,13 @@ public class BookController {
     ApiResponse<BookResponse> getBook(@PathVariable("id") Long id) {
         return ApiResponse.<BookResponse>builder()
                 .result(bookService.findBookById(id))
+                .build();
+    }
+
+    @PutMapping("/order")
+    ApiResponse<BookOrderResponse> updateBookOrder(@RequestBody @Valid BookOrderUpdateRequest request) {
+        return ApiResponse.<BookOrderResponse>builder()
+                .result(bookOrderService.updateBookOrder(request))
                 .build();
     }
 

@@ -15,9 +15,11 @@ import dxn.library.service.BookOrderService;
 import dxn.library.util.mapper.BookMapper;
 import dxn.library.util.mapper.BookOrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class BookOrderServiceImpl implements BookOrderService {
 
     private final BookOrderRepository bookOrderRepository;
