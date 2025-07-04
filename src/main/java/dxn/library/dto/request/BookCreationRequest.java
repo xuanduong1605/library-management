@@ -1,5 +1,7 @@
 package dxn.library.dto.request;
 
+import dxn.library.model.Author;
+import dxn.library.model.Category;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,10 +23,10 @@ public class BookCreationRequest {
     private String isbn;
 
     @NotNull(message = "Author is required")
-    private AuthorCreationRequest author;
+    private Author author;
 
     @NotNull(message = "Categories are required")
-    private Set<CategoryCreationRequest> categories;
+    private Set<Category> categories;
 
     private String description;
 }

@@ -19,6 +19,9 @@ public enum ResponseCode {
     CATEGORY_EXISTED(400, "Category already existed."),
     UNKNOWN_USER(401, "User does not exist."),
     UNKNOWN_BOOK(401, "Book does not exist."),
+    UNKNOWN_AUTHOR(401, "Author does not exist."),
+    UNKNOWN_CATEGORY(401, "Category does not exist."),
+    UNKNOWN_BOOK_ORDER(401, "Book order does not exist."),
 
     AUTHENTICATION_ERROR(402, "Password is incorrect."),
     AUTHORIZATION_ERROR(403, "Authorization error."),

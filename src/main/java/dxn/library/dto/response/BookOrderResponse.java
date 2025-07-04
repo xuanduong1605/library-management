@@ -9,7 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CategoryResponse {
+public class BookOrderResponse {
     private Long id;
-    private String name;
+    private Long bookId;
+    private Long userId;
+    private String borrowedDate;
+    private String dueDate;
+    private String returnedDate;
 }

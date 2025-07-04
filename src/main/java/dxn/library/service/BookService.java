@@ -13,9 +13,12 @@ import java.util.Optional;
 
 public interface BookService {
     BookResponse saveBook(BookCreationRequest request);
-    List<BookResponse> getAllBooks(int page, int size);
-    BookResponse findBookById(Long id);
-    void deleteBookById(Long id);
     AuthorResponse saveAuthor(AuthorCreationRequest request);
     CategoryResponse saveCategory(CategoryCreationRequest request);
+
+    List<BookResponse> getAllBooks(int page, int size);
+
+    BookResponse findBookById(Long id);
+
+    void deleteBookById(Long id);
 }

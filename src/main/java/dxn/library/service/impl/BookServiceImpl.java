@@ -22,7 +22,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -52,16 +55,24 @@ public class BookServiceImpl implements BookService {
             throw new ApiException(ResponseCode.BOOK_EXISTED);
         }
 
-        if (!authorRepository.existsByName(book.getAuthor().getName())) {
-            this.saveAuthor(request.getAuthor());
-            System.out.println("Saved author");
+        Author currentAuthor = book.getAuthor();
+        Optional<Author> author = authorRepository.findByName(currentAuthor.getName());
+        if (author.isPresent()) {
+            book.setAuthor(author.get());
+        } else {
+            authorRepository.save(currentAuthor);
         }
 
-        for (CategoryCreationRequest category : request.getCategories()) {
-            if (!categoryRepository.existsByName(category.getName())) {
-                this.saveCategory(category);
+        Set<Category> categories = new HashSet<Category>();
+        for (Category requestCategories : request.getCategories()) {
+            Optional<Category> category = categoryRepository.findByName(requestCategories.getName());
+            if (category.isPresent()) {
+                categories.add(category.get());
+            } else {
+                categories.add(categoryRepository.save(requestCategories));
             }
         }
+        book.setCategories(categories);
 
         return bookMapper.toBookResponse(bookRepository.save(book));
     }
@@ -105,4 +116,6 @@ public class BookServiceImpl implements BookService {
         }
         bookRepository.deleteById(id);
     }
+
+
 }
