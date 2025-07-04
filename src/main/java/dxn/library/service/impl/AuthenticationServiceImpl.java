@@ -11,6 +11,7 @@ import dxn.library.dto.response.AuthenticationResponse;
 import dxn.library.dto.response.IntrospectResponse;
 import dxn.library.exception.ApiException;
 import dxn.library.exception.ResponseCode;
+import dxn.library.model.User;
 import dxn.library.repository.UserRepository;
 import dxn.library.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +23,21 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${jwt.secret-key}")
     protected String secretKey;
 
     @Autowired
-    public AuthenticationServiceImpl(UserRepository userRepository) {
+    public AuthenticationServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public AuthenticationResponse authenticateUser(AuthenticationRequest request) throws JOSEException {
@@ -57,11 +60,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private String generateToken(String username) throws JOSEException {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
+        Optional<User> user = userRepository.getUserByUsername(username);
+
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(username)
                 .issuer("dxn.library")
                 .issueTime(new Date(Instant.now().toEpochMilli()))
                 .expirationTime(new Date(Instant.now().plusSeconds(60 * 60 * 24).toEpochMilli()))
+                .claim("scope", user.get().getRole())
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());

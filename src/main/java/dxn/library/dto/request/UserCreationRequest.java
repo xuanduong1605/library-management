@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,4 +27,6 @@ public class UserCreationRequest {
     private String email;
 
     private String phoneNumber;
+
+    private String role;
 }

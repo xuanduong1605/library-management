@@ -30,4 +30,6 @@ public class User {
     @OneToMany
     @JoinColumn(name = "book_id")
     private Set<Book> books;
+
+    private String role;
 }

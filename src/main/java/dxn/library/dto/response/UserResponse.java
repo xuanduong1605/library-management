@@ -2,6 +2,8 @@ package dxn.library.dto.response;
 
 import lombok.*;
 
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -11,4 +13,5 @@ public class UserResponse {
     private String username;
     private String email;
     private String phoneNumber;
+    private String role;
 }
