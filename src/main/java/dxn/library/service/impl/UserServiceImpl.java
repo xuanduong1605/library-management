@@ -11,6 +11,8 @@ import dxn.library.util.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,13 +22,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
     }
-    
+
     @Override
     public UserResponse saveUser(UserCreationRequest request){
         User user = userMapper.toUser(request);
@@ -34,6 +37,8 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByPhoneNumber(user.getPhoneNumber()) || userRepository.existsByEmail(user.getEmail())) {
             throw new ApiException(ResponseCode.USER_EXISTED);
         }
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userMapper.toUserResponse(userRepository.save(user));
     }

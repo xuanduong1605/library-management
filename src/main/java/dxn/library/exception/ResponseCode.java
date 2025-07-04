@@ -23,10 +23,10 @@ public enum ResponseCode {
     UNKNOWN_CATEGORY(401, "Category does not exist."),
     UNKNOWN_BOOK_ORDER(401, "Book order does not exist."),
 
-    AUTHENTICATION_ERROR(402, "Password is incorrect."),
-    AUTHORIZATION_ERROR(403, "Authorization error."),
-    AUTHENTICATION_SUCCESSFUL(102, "Login successful."),
-    AUTHORIZATION_SUCCESSFUL(103, "Authorization successful."),
+    AUTHENTICATION_ERROR(500, "Password is incorrect."),
+    AUTHORIZATION_ERROR(501, "Authorization error."),
+    AUTHENTICATION_SUCCESSFUL(502, "Login successful."),
+    AUTHORIZATION_SUCCESSFUL(503, "Authorization successful."),
 
     UNKNOWN_EXCEPTION(666, "An unknown error occurred.");
 

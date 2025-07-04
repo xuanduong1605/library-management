@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
-    ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException exception){
+    ResponseEntity<ApiResponse> handlingException(Exception exception){
         ApiResponse apiResponse = new ApiResponse();
 
         apiResponse.setCode(ResponseCode.UNKNOWN_EXCEPTION.getCode());
