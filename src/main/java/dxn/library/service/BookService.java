@@ -17,6 +17,7 @@ public interface BookService {
     CategoryResponse saveCategory(CategoryCreationRequest request);
 
     List<BookResponse> getAllBooks(int page, int size);
+    List<BookResponse> getBooksByCategory(int page, int size, String categoryName);
 
     BookResponse findBookById(Long id);
 

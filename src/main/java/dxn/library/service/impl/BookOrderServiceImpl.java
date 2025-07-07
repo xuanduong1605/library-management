@@ -14,8 +14,11 @@ import dxn.library.repository.UserRepository;
 import dxn.library.service.BookOrderService;
 import dxn.library.util.mapper.BookOrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -65,4 +68,15 @@ public class BookOrderServiceImpl implements BookOrderService {
 
         return bookOrderMapper.toBookOrderResponse(bookOrderRepository.save(bookOrder.get()));
     }
+
+    @Override
+    public List<BookOrderResponse> getBooksByUser(int page, int size, Long userId) {
+        Pageable pageable = PageRequest.of(page, size);
+        return bookOrderRepository.findBookOrderByUserId(userId, pageable)
+                .stream()
+                .map(bookOrderMapper::toBookOrderResponse)
+                .toList();
+    }
+
+
 }

@@ -62,6 +62,28 @@ public class BookController {
                 .build();
     }
 
+    @GetMapping("/{categoryName}")
+    ApiResponse<List<BookResponse>> getBooksByCategory(
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+            @PathVariable("categoryName") String categoryName
+    ){
+        return ApiResponse.<List<BookResponse>>builder()
+                .result(bookService.getBooksByCategory(page, size, categoryName))
+                .build();
+    }
+
+    @GetMapping("/user/{userId}")
+    ApiResponse<List<BookOrderResponse>> getBooksByUser(
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+            @PathVariable("userId") Long userId
+    ){
+        return ApiResponse.<List<BookOrderResponse>>builder()
+                .result(bookOrderService.getBooksByUser(page, size, userId))
+                .build();
+    }
+
     @GetMapping("/{id}")
     ApiResponse<BookResponse> getBook(@PathVariable("id") Long id) {
         return ApiResponse.<BookResponse>builder()

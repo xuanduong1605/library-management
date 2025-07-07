@@ -98,7 +98,20 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookResponse> getAllBooks(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return bookRepository.findAll(pageable).stream()
+        return bookRepository.findAll(pageable)
+                .stream()
+                .map(bookMapper::toBookResponse)
+                .toList();
+    }
+
+    @Override
+    public List<BookResponse> getBooksByCategory(int page, int size, String categoryName) {
+        Pageable pageable = PageRequest.of(page, size);
+        Long categoryId = categoryRepository.findByName(categoryName).orElseThrow(
+                () -> new ApiException(ResponseCode.UNKNOWN_CATEGORY)
+        ).getId();
+        return bookRepository.findAllByCategories_Id(categoryId, pageable)
+                .stream()
                 .map(bookMapper::toBookResponse)
                 .toList();
     }
@@ -116,6 +129,4 @@ public class BookServiceImpl implements BookService {
         }
         bookRepository.deleteById(id);
     }
-
-
 }
