@@ -11,5 +11,5 @@ public interface BookOrderService {
     BookOrderResponse updateBookOrder(BookOrderUpdateRequest request);
 
     List<BookOrderResponse> getBooksByUser(int page, int size, Long userId);
-
+    List<BookOrderResponse> getOverdueBooks(int page, int size);
 }

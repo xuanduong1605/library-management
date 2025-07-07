@@ -18,6 +18,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,5 +80,12 @@ public class BookOrderServiceImpl implements BookOrderService {
                 .toList();
     }
 
-
+    @Override
+    public List<BookOrderResponse> getOverdueBooks(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return bookOrderRepository.findOverdueBooks(new Date(Instant.now().toEpochMilli()), pageable)
+                .stream()
+                .map(bookOrderMapper::toBookOrderResponse)
+                .toList();
+    }
 }

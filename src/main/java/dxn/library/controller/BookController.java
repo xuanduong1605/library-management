@@ -2,7 +2,6 @@ package dxn.library.controller;
 
 import dxn.library.dto.request.*;
 import dxn.library.dto.response.*;
-import dxn.library.model.BookOrder;
 import dxn.library.service.BookOrderService;
 import dxn.library.service.BookService;
 import jakarta.validation.Valid;
@@ -70,6 +69,16 @@ public class BookController {
     ){
         return ApiResponse.<List<BookResponse>>builder()
                 .result(bookService.getBooksByCategory(page, size, categoryName))
+                .build();
+    }
+
+    @GetMapping("/overdue")
+    ApiResponse<List<BookOrderResponse>> getOverdueBookOrders(
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size
+    ){
+        return ApiResponse.<List<BookOrderResponse>>builder()
+                .result(bookOrderService.getOverdueBooks(page, size))
                 .build();
     }
 

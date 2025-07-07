@@ -6,10 +6,9 @@ import dxn.library.dto.request.CategoryCreationRequest;
 import dxn.library.dto.response.AuthorResponse;
 import dxn.library.dto.response.BookResponse;
 import dxn.library.dto.response.CategoryResponse;
-import dxn.library.model.Book;
+
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BookService {
     BookResponse saveBook(BookCreationRequest request);
