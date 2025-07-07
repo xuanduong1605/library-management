@@ -19,13 +19,12 @@ import javax.crypto.spec.SecretKeySpec;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     private final String[] PUBLIC_ENDPOINTS = {
-            "api/v0/auth/login", "api/v0/auth/introspect"
+            "/api/v0/auth/login", "/api/v0/auth/introspect", "/api/v0/auth/logout", "/api/v0/auth/refresh"
     };
 
     private final String[] ADMIN_ENDPOINTS = {
-            "api/v0/**"
+            "/api/v0/**"
     };
 
     @Value("${jwt.secret-key}")

@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Table(name = "book_records")
@@ -24,6 +24,9 @@ public class BookOrder {
 
     @Column(name = "user_id")
     private Long userId;
+
+    @Column(name = "librarian_id")
+    private Long librarianId;
 
     private Date borrowedDate;
 

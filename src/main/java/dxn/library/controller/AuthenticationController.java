@@ -3,6 +3,8 @@ package dxn.library.controller;
 import com.nimbusds.jose.JOSEException;
 import dxn.library.dto.request.AuthenticationRequest;
 import dxn.library.dto.request.IntrospectRequest;
+import dxn.library.dto.request.LogoutRequest;
+import dxn.library.dto.request.RefreshRequest;
 import dxn.library.dto.response.ApiResponse;
 import dxn.library.dto.response.AuthenticationResponse;
 import dxn.library.dto.response.IntrospectResponse;
@@ -33,9 +35,23 @@ public class AuthenticationController {
     }
 
     @PostMapping("/introspect")
-    ApiResponse<IntrospectResponse> authenticate(@RequestBody IntrospectRequest request) throws JOSEException, ParseException {
+    ApiResponse<IntrospectResponse> introspect(@RequestBody IntrospectRequest request) throws JOSEException, ParseException {
         return ApiResponse.<IntrospectResponse>builder()
                 .result(authenticationService.introspectToken(request))
+                .build();
+    }
+
+    @PostMapping("/logout")
+    ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws JOSEException, ParseException {
+        authenticationService.logoutUser(request);
+        return ApiResponse.<Void>builder()
+                .build();
+    }
+
+    @PostMapping("/refresh")
+    ApiResponse<AuthenticationResponse> refresh(@RequestBody RefreshRequest request) throws JOSEException, ParseException {
+        return ApiResponse.<AuthenticationResponse>builder()
+                .result(authenticationService.refreshToken(request))
                 .build();
     }
 }

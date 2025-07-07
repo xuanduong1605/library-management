@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +18,9 @@ public class BookOrderCreationRequest {
 
     @NotNull(message = "A book_id is required")
     private Long bookId;
+
+    @NotNull(message = "A librarian_id is required")
+    private Long librarianId;
 
     @NotNull(message = "Borrowed date is required")
     private Date borrowedDate;

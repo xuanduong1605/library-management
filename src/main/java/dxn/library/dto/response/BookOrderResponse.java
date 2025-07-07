@@ -13,6 +13,7 @@ public class BookOrderResponse {
     private Long id;
     private Long bookId;
     private Long userId;
+    private Long librarianId;
     private String borrowedDate;
     private String dueDate;
     private String returnedDate;
