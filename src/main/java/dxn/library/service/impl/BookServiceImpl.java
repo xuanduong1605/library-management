@@ -117,6 +117,34 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<BookResponse> getBooksByName(int page, int size, String bookName) {
+        Pageable pageable = PageRequest.of(page, size);
+        var result = bookRepository.findByNameContainingIgnoreCase(bookName, pageable);
+        return result.stream()
+                .map(bookMapper::toBookResponse)
+                .toList();
+    }
+
+    @Override
+    public List<CategoryResponse> getCategoryByName(int page, int size, String categoryName) {
+        Pageable pageable = PageRequest.of(page, size);
+        var result = categoryRepository.findByNameContainingIgnoreCase(categoryName, pageable);
+        return result.stream()
+                .map(bookMapper::toCategoryResponse)
+                .toList();
+    }
+
+    @Override
+    public List<AuthorResponse> getAuthorByName(int page, int size, String authorName) {
+        Pageable pageable = PageRequest.of(page, size);
+        var result = authorRepository.findByNameContainingIgnoreCase(authorName, pageable);
+        return result.stream()
+                .map(bookMapper::toAuthorResponse)
+                .toList();
+    }
+
+
+    @Override
     public BookResponse findBookById(Long id) {
         return bookMapper.toBookResponse(bookRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ResponseCode.UNKNOWN_BOOK)));

@@ -6,6 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ResponseCode {
+    NO_CONTENT(204, "No content found."),
+
     INVALID_INPUT(300, "Invalid input."),
     INVALID_USERNAME(301, "Username must be between 3 and 20 characters."),
     MISSING_USERNAME(302, "Username is required."),

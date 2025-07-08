@@ -60,7 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return AuthenticationResponse.builder()
                 .username(user.getUsername())
-                .token(generateToken(user.getUsername()))
+                .token(generateToken(user))
                 .authenticated(true)
                 .build();
     }
@@ -95,10 +95,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         expiredTokenRepository.save(expiredToken);
 
-        var username = token.getJWTClaimsSet().getSubject();
+        var user = userRepository.findById(Long.parseLong(token.getJWTClaimsSet().getSubject()));
 
         return AuthenticationResponse.builder()
-                .token(generateToken(username))
+                .token(generateToken(user.get()))
                 .authenticated(true)
                 .build();
     }
@@ -121,18 +121,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return signedJWT;
     }
 
-    private String generateToken(String username) throws JOSEException {
+    private String generateToken(User user) throws JOSEException {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
-        Optional<User> user = userRepository.getUserByUsername(username);
-
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(username)
+                .subject(String.valueOf(user.getId()))
                 .issuer("dxn.library")
                 .issueTime(new Date(Instant.now().toEpochMilli()))
                 .expirationTime(new Date(Instant.now().plusSeconds(60 * 60 * 24).toEpochMilli()))
                 .jwtID(UUID.randomUUID().toString())
-                .claim("scope", user.get().getRole())
+                .claim("scope", user.getRole())
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());

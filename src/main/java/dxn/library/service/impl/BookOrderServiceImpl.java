@@ -16,6 +16,8 @@ import dxn.library.util.mapper.BookOrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -45,6 +47,9 @@ public class BookOrderServiceImpl implements BookOrderService {
     @Override
     public BookOrderResponse saveBookOrder(BookOrderCreationRequest request) {
         BookOrder bookOrder = bookOrderMapper.toBookOrder(request);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        bookOrder.setLibrarianId(Long.parseLong(auth.getName()));
 
         Optional<User> user = userRepository.findById(bookOrder.getUserId());
         if (user.isEmpty()) {

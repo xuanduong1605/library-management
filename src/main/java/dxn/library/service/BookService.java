@@ -17,6 +17,9 @@ public interface BookService {
 
     List<BookResponse> getAllBooks(int page, int size);
     List<BookResponse> getBooksByCategory(int page, int size, String categoryName);
+    List<BookResponse> getBooksByName(int page, int size, String bookName);
+    List<CategoryResponse> getCategoryByName(int page, int size, String categoryName);
+    List<AuthorResponse> getAuthorByName(int page, int size, String authorName);
 
     BookResponse findBookById(Long id);
 
