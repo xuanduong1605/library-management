@@ -20,11 +20,15 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableWebSecurity
 public class SecurityConfig {
     private final String[] PUBLIC_ENDPOINTS = {
-            "/api/v0/auth/login", "/api/v0/auth/introspect", "/api/v0/auth/logout", "/api/v0/auth/refresh"
+            "/api/v0/auth/login", "/api/v0/auth/introspect"
+    };
+
+    private final String[] LIBRARIAN_ENDPOINTS = {
+            "/api/v0/books/**", "/api/v0/users/**"
     };
 
     private final String[] ADMIN_ENDPOINTS = {
-            "/api/v0/**"
+            "/api/v0/users"
     };
 
     @Value("${jwt.secret-key}")
@@ -34,7 +38,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(request ->
                 request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
-                        .requestMatchers(HttpMethod.GET, ADMIN_ENDPOINTS).hasAuthority("SCOPE_ADMIN")
+                        .requestMatchers(HttpMethod.POST, ADMIN_ENDPOINTS).hasAuthority("SCOPE_ADMIN")
+                        .requestMatchers(HttpMethod.GET, LIBRARIAN_ENDPOINTS).hasAnyAuthority("SCOPE_LIBRARIAN", "SCOPE_ADMIN")
                         .anyRequest().authenticated());
 
         httpSecurity.oauth2ResourceServer(oauth2 ->
