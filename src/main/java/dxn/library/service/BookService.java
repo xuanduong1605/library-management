@@ -7,7 +7,6 @@ import dxn.library.dto.response.AuthorResponse;
 import dxn.library.dto.response.BookResponse;
 import dxn.library.dto.response.CategoryResponse;
 
-
 import java.util.List;
 
 public interface BookService {
@@ -16,12 +15,9 @@ public interface BookService {
     CategoryResponse saveCategory(CategoryCreationRequest request);
 
     List<BookResponse> getAllBooks(int page, int size);
-    List<BookResponse> getBooksByCategory(int page, int size, String categoryName);
-    List<BookResponse> getBooksByName(int page, int size, String bookName);
-    List<CategoryResponse> getCategoryByName(int page, int size, String categoryName);
-    List<AuthorResponse> getAuthorByName(int page, int size, String authorName);
-
-    BookResponse findBookById(Long id);
+    BookResponse getBookById(Long id);
 
     void deleteBookById(Long id);
+
+    List<BookResponse> searchBook(String query, int page, int size);
 }

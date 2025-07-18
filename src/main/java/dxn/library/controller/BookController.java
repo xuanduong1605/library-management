@@ -61,17 +61,6 @@ public class BookController {
                 .build();
     }
 
-    @GetMapping("/{categoryName}")
-    ApiResponse<List<BookResponse>> getBooksByCategory(
-            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-            @RequestParam(value = "size", defaultValue = "10", required = false) int size,
-            @PathVariable("categoryName") String categoryName
-    ){
-        return ApiResponse.<List<BookResponse>>builder()
-                .result(bookService.getBooksByCategory(page, size, categoryName))
-                .build();
-    }
-
     @GetMapping("/overdue")
     ApiResponse<List<BookOrderResponse>> getOverdueBookOrders(
             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
@@ -96,7 +85,7 @@ public class BookController {
     @GetMapping("/{id}")
     ApiResponse<BookResponse> getBook(@PathVariable("id") Long id) {
         return ApiResponse.<BookResponse>builder()
-                .result(bookService.findBookById(id))
+                .result(bookService.getBookById(id))
                 .build();
     }
 
